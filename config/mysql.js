@@ -3,7 +3,7 @@ require("dotenv").config();
 // Create a MySQL connection pool
 const dbConfig = {
   host: process.env.HOST,
-  user: process.env.USER,
+  user: process.env.USERS,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 };
