@@ -1,60 +1,41 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
-const QuestionSchema = new mongoose.Schema({
-  amazina: {
-    type: String,
-    required: true,
-    minLength: 3,
-  },
-  intara: {
-    type: String,
-    required: true,
-    minLength: 3,
-  },
-  akarere: {
-    type: String,
-    required: true,
-  },
-  umurenge: {
-    type: String,
-    required: true,
-  },
-  akagari: {
-    type: String,
-    required: true,
-  },
-  umudugudu: {
-    type: String,
-    required: true,
-  },
-  telephone: {
-    type: String,
-    required: true,
-  },
-  indangamuntu: {
-    type: String,
-    required: true,
-  },
+const {Sequelize,DataTypes}=require('sequelize');
+const sequelize=new Sequelize(
+  process.env.DATABASE,
+  process.env.USER,
+  process.env.PASSWORD,
+  {
+    host: process.env.HOST,
+    dialect: "mysql",
+  }
+);
 
-  category: {
-    type: String,
-    required: true,
+
+const QuestionSchema = sequelize.define("Problems",{
+  category:{
+    type: DataTypes.STRING,
+    allowNull:false
   },
-  urwego: {
-    type: String,
-    required: true,
-  },
+  
   ikibazo: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+   allowNull:false
   },
   proof: {
-    type: String,
-    required: false,
-  },
-  time: {
-    type: Date,
-    default: Date.now,
-  },
+    type: DataTypes.STRING,
+  allowNull:true
+  }
 });
 
-module.exports.Question = mongoose.model("Question", QuestionSchema);
+// Sync the model with the database to create the table
+sequelize
+  .sync()
+  .then(() => {
+    console.log("Table created successfully.");
+  })
+  .catch((err) => {
+    console.error("Error creating table:", err);
+  });
+
+module.exports=QuestionSchema;
