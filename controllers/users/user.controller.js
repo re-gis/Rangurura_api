@@ -119,12 +119,13 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ where: { indangamuntu: indangamuntu } });
     if (!user || !(await bcrypt.compare(ijambobanga, user.ijambobanga)))
       return res.status(400).json({
-        message: "Invalid email or password!",
+        message: "shyiramo indangamuntu na password bitarimo ikosa!",
       });
 
     return res.status(200).json({
       message: "User logged in successfully",
       token: generateToken(user),
+      indangamuntu //this is must be stored on the fronted and used when making table or demanding difference services from the backend
     });
   } catch (error) {
     console.log(error);
