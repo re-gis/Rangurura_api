@@ -25,6 +25,10 @@ const QuestionSchema = sequelize.define("Problems",{
   proof: {
     type: DataTypes.STRING,
   allowNull:true
+  },
+  urwego:{
+    type: DataTypes.STRING,
+    allowNull:false 
   }
 });
 
