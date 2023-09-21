@@ -15,7 +15,7 @@ cloudinary.config({
 const QuestionController=async(req,res)=>{
 
     //this is to get the input from the user
-    const {category,proof,ikibazo,urwego}=req.body;
+    const {category,proof,ikibazo,urwego,indangamuntu}=req.body;
     if(!category || !ikibazo || !urwego){
         return    res.status(400).json({message:"Vuga ikibazo cyawe  byibuze ushyireho urwego nakategori yacyo ubundi wohereze!"});
        }
@@ -27,9 +27,10 @@ const QuestionController=async(req,res)=>{
             category,
             ikibazo,
             proof:uploadedFile.secure_url,//this is to store the link from cloud
-            urwego
+            urwego,
+            indangamuntu  //this is for the loged user
         })
-        
+
 
         //this is to save the problem 
         await newPloblem.save()

@@ -27,7 +27,11 @@ const QuestionSchema = sequelize.define("Problems",{
   allowNull:true
   },
   urwego:{
-    type: DataTypes.STRING,
+     type: DataTypes.STRING,
+   allowNull:false 
+  },
+  indangamuntu:{
+    type: DataTypes.STRING, //this is to begotten after login of the user
     allowNull:false 
   }
 });
