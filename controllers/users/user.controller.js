@@ -1,7 +1,10 @@
+require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const User = require("../../models/user.model");
 const { sendOtp, generateToken } = require("../../utils/user.utils");
 const Otp = require("../../models/otp.model");
+const twilio = require("twilio")(process.env.SID, process.env.AUTH_TOKEN);
+
 
 const registerUser = async (req, res) => {
   const {
@@ -52,7 +55,12 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(ijambobanga, 10);
 
     // send message
-    await sendOtp(telephone);
+    const otp = generateOtp();
+    await twilio.messages.create({
+      body: `Kode yawe yo muri Rangurura ni ${otp}`,
+      to: phoneNumber,
+      from: "+12765985304",
+    });
 
     // Create a new user
     const newUser = new User({
@@ -147,7 +155,7 @@ const verifyOtp = async (req, res) => {
       });
 
     // verify otp
-    console.log(await bcrypt.compare(otp, existingOtp.otp) );
+    console.log(await bcrypt.compare(otp, existingOtp.otp));
     const validOtp = await bcrypt.compare(otp, existingOtp.otp);
     if (!validOtp)
       return res.status(400).json({
@@ -172,4 +180,58 @@ const verifyOtp = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, verifyOtp };
+const resendOtp = async (req, res) => {
+  try {
+    const { number } = req.body;
+    if (!number)
+      return res.status(400).json({
+        message: "All details are required",
+      });
+
+    const newOtp = await sendOtp(number, async (e) => {
+      if (e) {
+        return res.status(500).json({ message: "An error occurred" });
+      } else {
+        const existingotp = await Otp.findOne({
+          where: {
+            number: number,
+          },
+        });
+
+        if (existingotp) {
+          await existingotp.update({ otp: newOtp });
+          console.log("nice");
+          return res.status(201).json({
+            message: "Otp resent",
+          });
+        } else {
+          console.log("nc");
+          await Otp.create({
+            otp: newOtpValue,
+            number: number,
+          });
+          return res.status(201).json({
+            message: "Otp resent",
+          });
+        }
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Internal server error...",
+    });
+  }
+};
+
+const resetPass = async (req, res) => {
+  try {
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Internal server error...",
+    });
+  }
+};
+
+module.exports = { registerUser, loginUser, verifyOtp, resendOtp, resetPass };

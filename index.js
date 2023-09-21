@@ -1,3 +1,4 @@
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const express = require("express");
 const userRouter = require("./routes/userRouters/user.routes");
@@ -5,7 +6,6 @@ const questionRouter = require("./routes/questionRouters/question.routes");
 const ideasRouter = require("./routes/ideaRouters/ideas.routes");
 const { mysqlConnect } = require("./config/mysql");
 const app = express();
-require("dotenv").config();
 
 const PORT = process.env.PORT;
 
