@@ -28,7 +28,20 @@ const protect = async (req, res, next) => {
           return res.status(403).json({
             message: "Not authorised!",
           });
-        req.user = user;
+        req.user = {
+          id: user.id,
+          amazina: user.amazina,
+          role: user.role,
+          intara: user.intara,
+          akarere: user.akarere,
+          umurenge: user.umurenge,
+          akagari: user.akagari,
+          umudugudu: user.umudugudu,
+          telephone: user.telephone,
+          indangamuntu: user.indangamuntu,
+          imageUrl: user.imageUrl,
+          verified: user.verified,
+        };
         next();
       });
     }

@@ -21,20 +21,12 @@ const generateOtp = () => {
   }
 };
 
-// Sending message to 4ne number
-const sendOtp = async (phoneNumber) => {
-  try {
-    
-  } catch (error) {
-    return "Error while sending OTP...";
-  }
-};
-
 const generateToken = (user) => {
   return jwt.sign(
     {
       id: user.id,
       indangamuntu: user.indangamuntu,
+      role: user.role,
       verified: user.verified,
     },
     process.env.JWT_SECRET,
@@ -46,6 +38,5 @@ const generateToken = (user) => {
 
 module.exports = {
   generateOtp,
-  sendOtp,
   generateToken,
 };

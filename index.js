@@ -5,6 +5,7 @@ const userRouter = require("./routes/userRouters/user.routes");
 const questionRouter = require("./routes/questionRouters/question.routes");
 const ideasRouter = require("./routes/ideaRouters/ideas.routes");
 const { mysqlConnect } = require("./config/mysql");
+const fileUpload = require("express-fileupload");
 const app = express();
 
 const PORT = process.env.PORT;
@@ -12,8 +13,16 @@ const PORT = process.env.PORT;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/* FILE UPLOAD */
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
+
 /* MYSQL Connect */
-mysqlConnect()
+mysqlConnect();
 
 /* ROUTES */
 app.use("/api/v1/users", userRouter);

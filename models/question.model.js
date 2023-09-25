@@ -1,7 +1,7 @@
-require('dotenv').config();
+require("dotenv").config();
 const mongoose = require("mongoose");
-const {Sequelize,DataTypes}=require('sequelize');
-const sequelize=new Sequelize(
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = new Sequelize(
   process.env.DATABASE,
   process.env.USER,
   process.env.PASSWORD,
@@ -11,29 +11,32 @@ const sequelize=new Sequelize(
   }
 );
 
-
-const QuestionSchema = sequelize.define("Problems",{
-  category:{
+const QuestionSchema = sequelize.define("Problems", {
+  category: {
     type: DataTypes.STRING,
-    allowNull:false
+    allowNull: false,
   },
-  
+
   ikibazo: {
     type: DataTypes.STRING,
-   allowNull:false
+    allowNull: false,
   },
   proof: {
     type: DataTypes.STRING,
-  allowNull:true
+    allowNull: true,
   },
-  urwego:{
-     type: DataTypes.STRING,
-   allowNull:false 
+  urwego: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  indangamuntu:{
-    type: DataTypes.STRING, //this is to begotten after login of the user
-    allowNull:false 
-  }
+  indangamuntu: {
+    type: DataTypes.STRING, //this is to be gotten after login of the user
+    allowNull: false,
+  },
+  cloudinaryId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 // Sync the model with the database to create the table
@@ -46,4 +49,4 @@ sequelize
     console.error("Error creating table:", err);
   });
 
-module.exports=QuestionSchema;
+module.exports = QuestionSchema;

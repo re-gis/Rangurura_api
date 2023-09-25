@@ -1,9 +1,11 @@
-const express = require('express')
-const QuestionController=require("../../controllers/questions/question.controller");
-const questionRouter = express.Router()
+const express = require("express");
+const {
+  createQuestion,
+} = require("../../controllers/questions/question.controller");
+const protect = require("../../middlewares/auth.user");
+const questionRouter = express.Router();
 
+//these are routes to be  used in access of the questions
+questionRouter.post("/create", protect, createQuestion);
 
-// //these are routes to be  used in access of the questions
-questionRouter.post('/problem',QuestionController);
-
-module.exports = questionRouter
+module.exports = questionRouter;

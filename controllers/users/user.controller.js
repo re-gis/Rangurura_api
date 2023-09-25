@@ -1,10 +1,9 @@
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const User = require("../../models/user.model");
-const { sendOtp, generateToken } = require("../../utils/user.utils");
+const { generateToken, generateOtp } = require("../../utils/user.utils");
 const Otp = require("../../models/otp.model");
 const twilio = require("twilio")(process.env.SID, process.env.AUTH_TOKEN);
-
 
 const registerUser = async (req, res) => {
   const {
@@ -18,6 +17,7 @@ const registerUser = async (req, res) => {
     ijambobanga, // Password in Kinyarwanda
     indangamuntu,
     kwemezaIjambobanga, // Password confirmation in Kinyarwanda
+    role,
   } = req.body;
   if (
     !amazina ||
@@ -58,9 +58,18 @@ const registerUser = async (req, res) => {
     const otp = generateOtp();
     await twilio.messages.create({
       body: `Kode yawe yo muri Rangurura ni ${otp}`,
-      to: phoneNumber,
+      to: telephone,
       from: "+12765985304",
     });
+
+    // Save the otp
+    const hashedOtp = await bcrypt.hash(otp, 10);
+    const newOtp = new Otp({
+      number: telephone,
+      otp: hashedOtp,
+    });
+
+    await newOtp.save();
 
     // Create a new user
     const newUser = new User({
@@ -73,6 +82,7 @@ const registerUser = async (req, res) => {
       telephone,
       ijambobanga: hashedPassword,
       indangamuntu,
+      role,
     });
 
     // Save the new user to the database
@@ -125,7 +135,7 @@ const loginUser = async (req, res) => {
     return res.status(200).json({
       message: "User logged in successfully",
       token: generateToken(user),
-      indangamuntu //this is must be stored on the fronted and used when making table or demanding difference services from the backend
+      indangamuntu, //this is must be stored on the fronted and used when making table or demanding difference services from the backend
     });
   } catch (error) {
     console.log(error);

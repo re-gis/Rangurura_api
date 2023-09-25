@@ -24,6 +24,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.1",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.0",
@@ -34,6 +35,7 @@
     "otp-generator": "^4.0.1",
     "routes": "^2.1.0",
     "sequelize": "^6.33.0",
-    "twilio": "^4.10.0"
+    "twilio": "^4.10.0",
+    "uuid": "^9.0.1"
   }
 }
