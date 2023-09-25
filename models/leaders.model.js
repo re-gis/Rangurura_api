@@ -12,11 +12,8 @@ const sequelize=new Sequelize(
 );
 
 //this is the table to store ideas for building country.
-const EventSchema = sequelize.define("Events",{
-  eventName:{
-type:DataTypes.STRING,
-allowNull:false
-  },
+const LeaderSchema= sequelize.define("Leaders",{
+
  indangamuntu:{
     type:DataTypes.STRING,
     allowNull:false
@@ -35,27 +32,8 @@ allowNull:false
     type: DataTypes.STRING,
     allowNull:false 
   },
- startDate:{
-    type: DataTypes.DATE,
-    allowNull:true,
 
-  },
-  endDate:{
-    type: DataTypes.DATE,
-    allowNull:true,
-   
-  },
-
-  endTime:{
-    type: DataTypes.DATE,
-    allowNull:true,
-  },
-
-  startTime:{
-    type: DataTypes.DATE,
-    allowNull:true
-  },
-  description:{
+  role:{
     type:DataTypes.STRING,
     allowNull:false
 
@@ -73,4 +51,4 @@ sequelize
     console.error("Error creating table:", err);
   });
 
-module.exports=EventSchema;
+module.exports=LeaderSchema;
