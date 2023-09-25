@@ -37,6 +37,10 @@ const QuestionSchema = sequelize.define("Problems", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  status: {
+    type: DataTypes.STRING,
+    defaultValue: "PENDING"
+  }
 });
 
 // Sync the model with the database to create the table

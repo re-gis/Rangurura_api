@@ -12,7 +12,7 @@ const createQuestion = async (req, res) => {
   }
   const indangamuntu = req.user.indangamuntu;
   //this is to get the input from the user
-  const { category, ikibazo, urwego } = req.body;
+  const { category, ikibazo, urwego, status } = req.body;
   if (!category || !ikibazo || !urwego) {
     return res.status(400).json({
       message:
@@ -39,6 +39,7 @@ const createQuestion = async (req, res) => {
         urwego,
         indangamuntu, //this is for the loged user
         cloudinaryId: proofData.public_id,
+        status,
       });
 
       //this is to save the problem
@@ -92,12 +93,61 @@ const getYourQns = async (req, res) => {
       data: myQns,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Internal server error...",
     });
   }
 };
 
+// get qns of your place
+const getPeoplesQns = async (req, res) => {
+  try {
+    if (!req.user)
+      return res.status(403).json({
+        message: "Login to continue...",
+      });
 
+    // get qns according to the level
+    // const qns = await QuestionSchema.findAll({
+    //   where: {
+    //     urwego: req.user.
+    //   }
+    // })
+  } catch (e) {
+    return res.status(500).json({
+      message: "Internal server error...",
+    });
+  }
+};
 
-module.exports = { createQuestion, getYourQns };
+const rejectQuestion = async (req, res) => {
+  try {
+    if (!req.user)
+      return res.status(403).json({
+        message: "Login to continue",
+      });
+
+    const { id } = req.params;
+    // find the question
+    const qn = await QuestionSchema.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!qn)
+      return res.status(404).json({ message: `Question ${id} not found!` });
+
+    // reject it
+    qn.status = "REJECTED";
+    qn.save();
+    return res.status(201).json({
+      message: `Question ${id} rejected`,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error..." });
+  }
+};
+
+module.exports = { createQuestion, getYourQns, getPeoplesQns, rejectQuestion };
