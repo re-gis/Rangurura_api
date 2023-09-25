@@ -4,6 +4,7 @@ const express = require("express");
 const userRouter = require("./routes/userRouters/user.routes");
 const questionRouter = require("./routes/questionRouters/question.routes");
 const ideasRouter = require("./routes/ideaRouters/ideas.routes");
+const eventRouter=require('./routes/eventRouter/event.routes');
 const { mysqlConnect } = require("./config/mysql");
 const fileUpload = require("express-fileupload");
 const app = express();
@@ -28,6 +29,7 @@ mysqlConnect();
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/questions", questionRouter);
 app.use("/api/v1/ideas", ideasRouter);
+app.use("/api/v1/events", eventRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${PORT}...`);
