@@ -69,4 +69,35 @@ const createQuestion = async (req, res) => {
     });
   }
 };
-module.exports = { createQuestion };
+
+const getYourQns = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(403).json({
+        message: "Login to continue",
+      });
+    }
+
+    // get qns
+    const myQns = await QuestionSchema.findAll({
+      where: { indangamuntu: req.user.indangamuntu },
+    });
+
+    if (myQns.length == 0)
+      return res.status(404).json({
+        message: "No questions found!",
+      });
+
+    return res.status(200).json({
+      data: myQns,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error...",
+    });
+  }
+};
+
+
+
+module.exports = { createQuestion, getYourQns };
