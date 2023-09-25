@@ -6,7 +6,8 @@ const questionRouter = require("./routes/questionRouters/question.routes");
 const ideasRouter = require("./routes/ideaRouters/ideas.routes");
 const eventRouter=require('./routes/eventRouter/event.routes');
 const leaderRouter=require("./routes/leadersRoutes/leaders.routes");
-const { mysqlConnect } = require("./config/mysql");
+// const { mysqlConnect } = require("./config/mysql");
+const { pool } = require("./config/mysql");
 const fileUpload = require("express-fileupload");
 const app = express();
 
@@ -24,7 +25,9 @@ app.use(
 );
 
 /* MYSQL Connect */
-mysqlConnect();
+// mysqlConnect();
+pool
+
 
 /* ROUTES */
 app.use("/api/v1/users", userRouter);
@@ -32,7 +35,6 @@ app.use("/api/v1/questions", questionRouter);
 app.use("/api/v1/ideas", ideasRouter);
 app.use("/api/v1/events", eventRouter);
 app.use("/api/v1/leaders", leaderRouter);
-
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${PORT}...`);
 });
