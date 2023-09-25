@@ -17,6 +17,10 @@ const EventSchema = sequelize.define("Events",{
 type:DataTypes.STRING,
 allowNull:false
   },
+//  indangamuntu:{
+//     type:DataTypes.STRING,
+//     allowNull:false
+//       },
 
   organizationLevel:{
     type: DataTypes.STRING,
@@ -33,21 +37,23 @@ allowNull:false
   },
  startDate:{
     type: DataTypes.DATE,
-    allowNull:false 
+    allowNull:true,
+
   },
   endDate:{
     type: DataTypes.DATE,
-    allowNull:false 
+    allowNull:true,
+   
   },
 
   endTime:{
     type: DataTypes.DATE,
-    allowNull:false 
+    allowNull:true,
   },
 
   startTime:{
     type: DataTypes.DATE,
-    allowNull:false 
+    allowNull:true
   },
   description:{
     type:DataTypes.STRING,

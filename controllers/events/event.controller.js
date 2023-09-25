@@ -2,6 +2,11 @@
 const EventSchema=require('../../models/event.model');
 
 const eventController=async(req,res)=>{
+    if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+const indangamuntu = req.user.indangamuntu;
 //this is to get the input from the user
 const {eventName,
     organizationLevel,
@@ -16,12 +21,12 @@ const {eventName,
     if( !eventName ||
         !organizationLevel||
         !location||
-         category ||
+        !category ||
         !startDate ||  
         !endDate ||        
-         !endTime ||     
+        !endTime ||     
         !startTime ||
-         !description){
+        !description){
         return    res.status(400).json({message:"Uzuza ibisabwa byose maze wohereze!"});
        }
       
@@ -30,15 +35,16 @@ const {eventName,
             eventName,
             organizationLevel,
             location,
-             category,
+            category,
             startDate,
              endDate,
              endTime,
              startTime,
-             description
+             description,
+             indangamuntu //this is for logged
         })
         
-        console.log("the eventname is " + eventName)
+       
 
 //this is to save the problem to the db
 await newEvent.save()
@@ -51,3 +57,7 @@ return res.status(200).json({msg:"Wamaze gutanga event yawe tegereza abo igenewe
 
 //this is to export the eventcontroller
 module.exports=eventController;
+
+
+
+
