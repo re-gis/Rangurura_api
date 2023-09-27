@@ -1,7 +1,7 @@
-require('dotenv').config();
+require("dotenv").config();
 const mongoose = require("mongoose");
-const {Sequelize,DataTypes}=require('sequelize');
-const sequelize=new Sequelize(
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = new Sequelize(
   process.env.DATABASE,
   process.env.USER,
   process.env.PASSWORD,
@@ -12,24 +12,24 @@ const sequelize=new Sequelize(
 );
 
 //this is the table to store ideas for building country.
-const IdeaSchema = sequelize.define("Ideas",{
-  indangamuntu:{
-type:DataTypes.STRING,
-allowNull:false
-  },
-  category:{
+const IdeaSchema = sequelize.define("Ideas", {
+  indangamuntu: {
     type: DataTypes.STRING,
-    allowNull:false
+    allowNull: false,
   },
-  
- igitekerezo: {
+  category: {
     type: DataTypes.STRING,
-   allowNull:false
+    allowNull: false,
   },
-  urwego:{
+
+  igitekerezo: {
     type: DataTypes.STRING,
-    allowNull:false 
-  }
+    allowNull: false,
+  },
+  urwego: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 // Sync the model with the database to create the table
@@ -42,4 +42,4 @@ sequelize
     console.error("Error creating table:", err);
   });
 
-module.exports=IdeaSchema;
+module.exports = IdeaSchema;

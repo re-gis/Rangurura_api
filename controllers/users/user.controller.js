@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../../models/user.model");
 const { generateToken, generateOtp } = require("../../utils/user.utils");
 const Otp = require("../../models/otp.model");
+const LeaderSchema = require("../../models/leaders.model");
 const twilio = require("twilio")(process.env.SID, process.env.AUTH_TOKEN);
 
 const registerUser = async (req, res) => {
@@ -211,12 +212,10 @@ const resendOtp = async (req, res) => {
 
         if (existingotp) {
           await existingotp.update({ otp: newOtp });
-          console.log("nice");
           return res.status(201).json({
             message: "Otp resent",
           });
         } else {
-          console.log("nc");
           await Otp.create({
             otp: newOtpValue,
             number: number,
@@ -245,4 +244,56 @@ const resetPass = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, verifyOtp, resendOtp, resetPass };
+const createALeader = async (req, res) => {
+  try {
+    if (!req.user)
+      return res.status(403).json({
+        message: "Login to continue",
+      });
+    const { indangamuntu, organizationLevel, location, category, role } =
+      req.body;
+
+    if (!indangamuntu || !organizationLevel || !location || !category || !role)
+      return res.status(403).json({
+        message: "All credentials are required!",
+      });
+
+    // find the leader if present update else create new one
+    const eUser = await LeaderSchema.findOne({
+      where: {
+        indangamuntu: indangamuntu,
+      },
+    });
+
+    if (eUser) {
+      // update the current user
+      const userToSave = new LeaderSchema({
+        indangamuntu: indangamuntu,
+        organizationLevel: organizationLevel,
+        location: location,
+        category: category,
+        role: role,
+      });
+
+      if (await userToSave.save())
+        return res.status(201).json({ message: "Leader saved successfully" });
+      return res.status(500).json({
+        mesage: "Error while saving the leader",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Internal server error...",
+    });
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  verifyOtp,
+  resendOtp,
+  resetPass,
+  createALeader,
+};
