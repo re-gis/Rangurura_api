@@ -5,7 +5,8 @@ const displayAllEvents=require('../../controllers/events/displayEvents.controlle
 const displayLeaderEvents=require('../../controllers/events/displayEvents.controller').displayLeadersEvents;
 
 eventRouter.post('/sendevents',eventController); //this is the route to send the event
-
 eventRouter.get('/allevents',displayAllEvents); //this is the route to get the event
-eventRouter.post('/leaderEvent',displayAllEvents); //this is the route to get the event of the given leader
+eventRouter.post('/leaderEvent',displayLeaderEvents); //this is the route to get the event of the given leader
+
 module.exports = eventRouter;
+

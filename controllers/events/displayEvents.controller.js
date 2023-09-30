@@ -24,7 +24,7 @@ const displayAllEvents = async (req, res) => {
   }
 };
 
-//this is the evente posted by the given leaders
+//this is the event posted by the given leaders
 const displayLeadersEvents = async (req, res) => {
   const {indangamuntu,location}=req.body;
    try {

@@ -35,6 +35,8 @@
     "otp-generator": "^4.0.1",
     "routes": "^2.1.0",
     "sequelize": "^6.33.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "twilio": "^4.10.0",
     "uuid": "^9.0.1"
   }
