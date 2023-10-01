@@ -1,4 +1,4 @@
-//this is the logic about the events
+//this is the logic about the leader
 const LeaderSchema=require('../../models/leaders.model');
 
 const leaderController=async(req,res)=>{

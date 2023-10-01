@@ -39,7 +39,9 @@ app.use("/api/v1/events", eventRouter);
 app.use("/api/v1/leaders", leaderRouter);
 
 /* SWAGGER */
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${PORT}...`);
