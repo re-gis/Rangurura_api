@@ -32,30 +32,41 @@ const userRouter = express.Router();
  *           type: object
  *           properties:
  *             amazina:
- *             required:true
+ *               type:string
+ *               required:true
  *             role:
- *             required:true
+ *               type:string
+ *               required:true
  *             intara:
- *             required:true
+ *               type:string
+ *               required:true
  *             akarere: 
- *             required:true
+ *               type:string
+ *               required:true
  *             umurenge: 
- *             required:true
+ *               type:string
+ *               required:true
  *             akagari:
- *             required:true
- *             umudugudu: 
- *             required:true
+ *               type:string
+ *               required:true
+ *             umudugudu:
+ *               type:string 
+ *               required:true
  *             telephone: 
- *             required:true
+ *               type:string 
+ *               required:true
  *             indangamuntu:
- *             required:true
- *             ijambobanga: 
- *             required:true
+ *               type:string
+ *               required:true
+ *             ijambobanga:
+ *               type:string 
+ *               required:true
  *             imageUrl:
- *             required:true
- *             
+ *               required:true
+ *               type:string             
  *             verified: 
- *             required:true
+ *               type:string
+ *              required:true
  * 
  *     responses:
  *       200:
@@ -86,8 +97,10 @@ userRouter.post("/register", registerUser);
  *           properties:
  *            indangamuntu:
  *               type: string
+ *               required:true
  *             password:
  *               type: string
+ *               required:true
  *     responses:
  *       200:
  *         description: User logged in successfully.
@@ -146,6 +159,7 @@ userRouter.post("/verify", verifyOtp);
  *           type: object
  *           properties:
  *            number:
+ *               required:true
  *               type: string
  *           
  *     responses:
@@ -175,6 +189,7 @@ userRouter.post("/resendOtp", resendOtp);
  *           properties:
  *            number:
  *               type: string
+ *               required:true
  *           
  *     responses:
  *       200:
@@ -202,16 +217,24 @@ userRouter.put("/:id/passReset");
  *         schema:
  *           type: object
  *           properties:
- *          indangamuntu:
- *          required:true
- *          organizationLevel: 
- *          required:true
- *          location: 
- *          required:true
- *          category:
- *           required:true
- *          role: 
- *          required:true
+ *              indangamuntu:
+ *               type: string
+ *                required:true
+ *              organizationLevel: 
+ *                 required:true
+ *                 type: string
+ *              location: 
+ *                 required:true
+ *                 type: string
+ * 
+ *              category:
+ *                  required:true
+ *                  type: string
+ * 
+ *               role: 
+ *                 required:true
+ *                 type: string
+ * 
  *           
  *     responses:
  *       200:

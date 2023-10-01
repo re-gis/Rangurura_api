@@ -38,6 +38,7 @@ app.use("/api/v1/ideas", ideasRouter);
 app.use("/api/v1/events", eventRouter);
 app.use("/api/v1/leaders", leaderRouter);
 
+
 /* SWAGGER */
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
