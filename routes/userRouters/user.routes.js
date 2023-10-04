@@ -212,7 +212,6 @@ userRouter.post("/resendOtp", resendOtp);
  *       500:
  *         description: Internal server error.
  */
-
 userRouter.put("/:id/passReset");
 
 /**
