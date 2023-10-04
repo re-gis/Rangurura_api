@@ -9,7 +9,7 @@ const options = {
       description: "This is the swagger documentation of rangurura",
     },
   },
-  apis: ["../routes/userRouters/user.routes.js"],
+  apis: ["./routes/*/*.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

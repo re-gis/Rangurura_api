@@ -11,72 +11,85 @@ const userRouter = express.Router();
 
 /**
  * @swagger
- * tags:
- *   name: Users
- *   description: API endpoints related to user management.
- */
-
-/**
- * @swagger
  * /api/v1/users/register:
  *   post:
- *     summary: Register a new user.
- *     description: Register a new user with the provided details.
- *     tags: [Users]
- *     parameters:
- *       - in: body
- *         name: user
- *         description: The user object to be registered.
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             amazina:
- *               type:string
- *               required:true
- *             role:
- *               type:string
- *               required:true
- *             intara:
- *               type:string
- *               required:true
- *             akarere: 
- *               type:string
- *               required:true
- *             umurenge: 
- *               type:string
- *               required:true
- *             akagari:
- *               type:string
- *               required:true
- *             umudugudu:
- *               type:string 
- *               required:true
- *             telephone: 
- *               type:string 
- *               required:true
- *             indangamuntu:
- *               type:string
- *               required:true
- *             ijambobanga:
- *               type:string 
- *               required:true
- *             imageUrl:
- *               required:true
- *               type:string             
- *             verified: 
- *               type:string
- *              required:true
- * 
+ *     summary: Register a new user
+ *     description: Register a new user to the Rangurura system.
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - amazina
+ *               - intara
+ *               - akarere
+ *               - akagari
+ *               - umudugudu
+ *               - telephone
+ *               - ijambobanga
+ *               - indangamuntu
+ *               - kwemezaIjambobanga
+ *               - umurenge
+ *             properties:
+ *               amazina:
+ *                 type: string
+ *               intara:
+ *                 type: string
+ *               akarere:
+ *                 type: string
+ *               umurenge:
+ *                 type: string
+ *               akagari:
+ *                 type: string
+ *               umudugudu:
+ *                 type: string
+ *               telephone:
+ *                 type: string
+ *               ijambobanga:
+ *                 type: string
+ *                 description: Password in Kinyarwanda
+ *               indangamuntu:
+ *                 type: string
+ *               kwemezaIjambobanga:
+ *                 type: string
+ *                 description: Password confirmation in Kinyarwanda
+ *               role:
+ *                 type: string
  *     responses:
  *       200:
- *         description: User registered successfully.
+ *         description: Successful registration
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  *       400:
- *         description: Bad request - Invalid input.
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 error:
+ *                   type: string
  *       500:
- *         description: Internal server error.
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-
 userRouter.post("/register", registerUser);
 
 
