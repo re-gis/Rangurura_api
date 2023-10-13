@@ -40,8 +40,8 @@ app.use("/api/v1/leaders", leaderRouter);
 
 
 /* SWAGGER */
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 
 app.listen(process.env.PORT, () => {

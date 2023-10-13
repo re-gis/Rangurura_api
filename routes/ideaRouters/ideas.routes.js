@@ -16,7 +16,7 @@ const IdeaController=require('../../controllers/ideas/idea.controller')
  * /api/v1/ideas:
  *   post:
  *     summary: send a new idea.
- *     description: send a new idea with the provided details.
+ *     description: Send a new idea with the provided details.
  *     tags: [Ideas]
  *     parameters:
  *       - in: body
@@ -26,17 +26,14 @@ const IdeaController=require('../../controllers/ideas/idea.controller')
  *         schema:
  *           type: object
  *           properties:
- *          indangamuntu:
- *             required:true
- *          category:
- *             required:true
- * 
- *          igitekerezo,
- *             required:true
- * 
- *          urwego:
- *             required:true
- * 
+ *             indangamuntu:
+ *               required: true
+ *             category:
+ *               required: true
+ *             igitekerezo:
+ *               required: true
+ *             urwego:
+ *               required: true
  * 
  *     responses:
  *       200:
@@ -47,8 +44,6 @@ const IdeaController=require('../../controllers/ideas/idea.controller')
  *         description: Internal server error.
  */
 
-
-ideasRouter.post('/ideas',IdeaController);
-
+ideasRouter.post('/ideas', IdeaController);
 
 module.exports = ideasRouter;
