@@ -92,7 +92,6 @@ const userRouter = express.Router();
  */
 userRouter.post("/register", registerUser);
 
-
 /**
  * @swagger
  * /api/v1/users/login:
@@ -123,8 +122,6 @@ userRouter.post("/register", registerUser);
  *         description: Internal server error.
  */
 userRouter.post("/login", loginUser);
-
-
 
 /**
  * @swagger
@@ -174,7 +171,7 @@ userRouter.post("/verify", verifyOtp);
  *            number:
  *               required:true
  *               type: string
- *           
+ *
  *     responses:
  *       200:
  *         description: verification opt sent  successfully.
@@ -203,7 +200,7 @@ userRouter.post("/resendOtp", resendOtp);
  *            number:
  *               type: string
  *               required:true
- *           
+ *
  *     responses:
  *       200:
  *         description: password reset  successfully.
@@ -232,22 +229,22 @@ userRouter.put("/:id/passReset");
  *              indangamuntu:
  *               type: string
  *                required:true
- *              organizationLevel: 
+ *              organizationLevel:
  *                 required:true
  *                 type: string
- *              location: 
+ *              location:
  *                 required:true
  *                 type: string
- * 
+ *
  *              category:
  *                  required:true
  *                  type: string
- * 
- *               role: 
+ *
+ *               role:
  *                 required:true
  *                 type: string
- * 
- *           
+ *
+ *
  *     responses:
  *       200:
  *         description: leader added successfully.
@@ -259,12 +256,4 @@ userRouter.put("/:id/passReset");
 
 userRouter.post("/leaders/add", protect, role("umuturage"), createALeader);
 
-
 module.exports = userRouter;
-
-
-
-
-
-
-
