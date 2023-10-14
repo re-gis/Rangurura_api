@@ -8,14 +8,19 @@ const eventRouter=require('./routes/eventRouter/event.routes');
 const leaderRouter=require("./routes/leadersRoutes/leaders.routes");
 const swaggerSpec=require("./utils/swagger");
 const swaggerUi = require('swagger-ui-express')
+const cors=require('cors')
 // const { mysqlConnect } = require("./config/mysql");
 const { pool } = require("./config/mysql");
 const fileUpload = require("express-fileupload");
 const app = express();
 
+
 const PORT = process.env.PORT;
 
 app.use(bodyParser.json());
+app.use(cors({
+  credentials:true
+}))
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /* FILE UPLOAD */
@@ -40,8 +45,8 @@ app.use("/api/v1/leaders", leaderRouter);
 
 
 /* SWAGGER */
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 
 app.listen(process.env.PORT, () => {

@@ -1,5 +1,4 @@
 const swaggerJSDoc = require("swagger-jsdoc");
-const user = require("../routes/leadersRoutes/leaders.routes");
 const options = {
   definition: {
     openapi: "3.0.0",

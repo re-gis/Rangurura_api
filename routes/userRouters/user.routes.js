@@ -96,30 +96,55 @@ userRouter.post("/register", registerUser);
  * @swagger
  * /api/v1/users/login:
  *   post:
- *     summary: User login.
- *     description: Log in an existing user with the provided credentials.
- *     tags: [Users]
- *     parameters:
- *       - in: body
- *         name: credentials
- *         description: The user's login credentials.
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *            indangamuntu:
- *               type: string
- *               required:true
- *             password:
- *               type: string
- *               required:true
+ *     summary: logg in the user
+ *     description: Loggin user to the Rangurura system.
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - ijambobanga
+ *               - indangamuntu
+ *             properties:
+ *               ijambobanga:
+ *                 type: string
+ *                 description: Password in english
+ *               indangamuntu:
+ *                 type: string
  *     responses:
  *       200:
  *         description: User logged in successfully.
- *       401:
- *         description: Unauthorized - Invalid credentials.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 error:
+ *                   type: string
  *       500:
- *         description: Internal server error.
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 userRouter.post("/login", loginUser);
 
@@ -127,29 +152,48 @@ userRouter.post("/login", loginUser);
  * @swagger
  * /api/v1/users/verify:
  *   post:
- *     summary: User verification.
- *     description: this is to verify the user with otp.
- *     tags: [Users]
- *     parameters:
- *       - in: body
- *         name: credentials
- *         description: The user's login credentials.
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *            otp:
- *               type: string
- *               required
- *            number:
- *               type: string
+ *     summary: verify the user
+ *     description: verify user to the Rangurura system.
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *             properties:
  *     responses:
  *       200:
  *         description: User verified successfully.
- *       401:
- *         description: Unauthorized - Invalid credentials.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 error:
+ *                   type: string
  *       500:
- *         description: Internal server error.
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 userRouter.post("/verify", verifyOtp);
 
@@ -158,28 +202,29 @@ userRouter.post("/verify", verifyOtp);
  * /api/v1/users/resendOtp:
  *   post:
  *     summary: User reverify.
- *     description: this is to resent verification otp to the user.
+ *     description: This is to resend verification OTP to the user.
  *     tags: [Users]
  *     parameters:
  *       - in: body
  *         name: verification otp
- *         description: The user's verification otp.
+ *         description: The user's verification OTP.
  *         required: true
  *         schema:
  *           type: object
  *           properties:
- *            number:
- *               required:true
+ *             number:
+ *               required: true
  *               type: string
- *
+ *           
  *     responses:
  *       200:
- *         description: verification opt sent  successfully.
+ *         description: Verification OTP sent successfully.
  *       401:
  *         description: Unauthorized - Invalid credentials.
  *       500:
  *         description: Internal server error.
  */
+
 userRouter.post("/resendOtp", resendOtp);
 
 /**
@@ -192,25 +237,24 @@ userRouter.post("/resendOtp", resendOtp);
  *     parameters:
  *       - in: body
  *         name: verification otp
- *         description: This is to reset the password of the user if he or she forget the password.
+ *         description: This is to reset the password of the user if he or she forgets the password.
  *         required: true
  *         schema:
  *           type: object
  *           properties:
- *            number:
+ *             number:
  *               type: string
  *               required:true
- *
+ *           
  *     responses:
  *       200:
- *         description: password reset  successfully.
+ *         description: password reset successfully.
  *       401:
  *         description: Unauthorized - Invalid credentials.
  *       500:
  *         description: Internal server error.
  */
 userRouter.put("/:id/passReset");
-
 /**
  * @swagger
  * /api/v1/users/leaders/add:
@@ -226,25 +270,38 @@ userRouter.put("/:id/passReset");
  *         schema:
  *           type: object
  *           properties:
- *              indangamuntu:
+ *             indangamuntu:
+ *               type: string
+ *               required: true
+ *             organizationLevel: 
+ *               required: true
+ *               type: string
+ *             location: 
+ *               required: true
+ *               type: string
+ *             category:
+ *               required: true
+ *               type: string
+ *             role: 
+ *               required: true
  *               type: string
  *                required:true
- *              organizationLevel:
+ *              organizationLevel: 
  *                 required:true
  *                 type: string
- *              location:
+ *              location: 
  *                 required:true
  *                 type: string
- *
+ * 
  *              category:
  *                  required:true
  *                  type: string
- *
- *               role:
+ * 
+ *               role: 
  *                 required:true
  *                 type: string
- *
- *
+ * 
+ *           
  *     responses:
  *       200:
  *         description: leader added successfully.
