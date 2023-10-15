@@ -9,6 +9,7 @@ const leaderRouter = require("./routes/leadersRoutes/leaders.routes");
 const swaggerSpec = require("./utils/swagger");
 const swaggerUi = require("swagger-ui-express");
 const { index } = require("./algoria");
+const messageRouter=require("./routes/messagesRouter/messages.routes");
 
 const cors = require("cors");
 // const { mysqlConnect } = require("./config/mysql");
@@ -44,8 +45,9 @@ app.use("/api/v1/questions", questionRouter);
 app.use("/api/v1/ideas", ideasRouter);
 app.use("/api/v1/events", eventRouter);
 app.use("/api/v1/leaders", leaderRouter);
+app.use("/api/v1/message",messageRouter);
 app /* SWAGGER */.app
-  .use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 // Search api

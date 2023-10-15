@@ -295,8 +295,7 @@ userRouter.put("/:id/passReset");
  * 
  *              category:
  *                  required:true
- *                  type: string
- * 
+ *                  type: string 
  *               role: 
  *                 required:true
  *                 type: string

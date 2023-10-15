@@ -13,7 +13,7 @@ const IdeaController=require('../../controllers/ideas/idea.controller')
 
 /**
  * @swagger
- * /api/v1/ideas:
+ * /api/v1/ideas/ideas:
  *   post:
  *     summary: send a new idea.
  *     description: Send a new idea with the provided details.
