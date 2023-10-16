@@ -5,6 +5,9 @@ const { generateToken, generateOtp } = require("../../utils/user.utils");
 const Otp = require("../../models/otp.model");
 const LeaderSchema = require("../../models/leaders.model");
 const twilio = require("twilio")(process.env.SID, process.env.AUTH_TOKEN);
+const path = require("path");
+const {pool} = require(path.join(__dirname, "../../config/mysql"));
+
 
 const registerUser = async (req, res) => {
   const {
@@ -18,7 +21,6 @@ const registerUser = async (req, res) => {
     ijambobanga, // Password in Kinyarwanda
     indangamuntu,
     kwemezaIjambobanga, // Password confirmation in Kinyarwanda
-    role,
   } = req.body;
   if (
     !amazina ||
@@ -82,8 +84,7 @@ const registerUser = async (req, res) => {
       umudugudu,
       telephone,
       ijambobanga: hashedPassword,
-      indangamuntu,
-      role,
+      indangamuntu
     });
 
     // Save the new user to the database
@@ -91,7 +92,7 @@ const registerUser = async (req, res) => {
 
     return res.status(200).json({
       message:
-        "Urakoze kwiyandikishya muri Rangurura! Ubu ushobora kwinjiramo ugatanga ikibazo cyawe!",
+        "Urakoze kwiyandikisha muri Rangurura! Ubu ushobora kwinjiramo ugatanga ikibazo cyawe!",
     });
   } catch (error) {
     // Handle specific errors related to unique constraints (assuming you're using Sequelize)
@@ -288,6 +289,28 @@ const createALeader = async (req, res) => {
     });
   }
 };
+//this is to delete the account of the user
+const destroyAccount=async(req,res)=>{
+  try{
+ const {indangamuntu}=req.body;
+ const sql=`DELETE FROM Users WHERE indangamuntu=${indangamuntu}`;
+
+  // Use the mysqlConnection object to query the database
+  pool.query(sql, (error, results, fields) => {
+    if (error) {
+      console.error("Error executing SQL query:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    
+    // Send the query results as a JSON response
+    res.status(200).json({message:"your account has been deleted successfully!"});
+  });
+ 
+  }catch(error){
+    console.log(error);
+    res.status(500).json({error:"something went wrong! Please try again latter."});
+  }
+  }
 
 module.exports = {
   registerUser,
@@ -296,4 +319,5 @@ module.exports = {
   resendOtp,
   resetPass,
   createALeader,
+  destroyAccount
 };

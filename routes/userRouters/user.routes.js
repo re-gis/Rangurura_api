@@ -5,6 +5,7 @@ const {
   verifyOtp,
   resendOtp,
   createALeader,
+  destroyAccount
 } = require("../../controllers/users/user.controller");
 const { protect, role } = require("../../middlewares/auth.user");
 const userRouter = express.Router();
@@ -57,8 +58,6 @@ const userRouter = express.Router();
  *               kwemezaIjambobanga:
  *                 type: string
  *                 description: Password confirmation in Kinyarwanda
- *               role:
- *                 type: string
  *     responses:
  *       200:
  *         description: Successful registration
@@ -311,5 +310,35 @@ userRouter.put("/:id/passReset");
  */
 
 userRouter.post("/leaders/add", protect, role("umuturage"), createALeader);
+/**
+ * @swagger
+ * /api/v1/users/deleteAccount:
+ *   post:
+ *     summary: delete account.
+ *     description: This is to delete your account.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: body
+ *         name: Delete account
+ *         description: Destroying account.
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             indangamuntu:
+ *               type: string
+ *               required: true
+ *           
+ *     responses:
+ *       200:
+ *         description: account deleted successfully.
+ *       401:
+ *         description: Unauthorized - Invalid credentials.
+ *       500:
+ *         description: Internal server error.
+ */
+userRouter.delete("/deleteAccount",destroyAccount);
+
+
 
 module.exports = userRouter;
