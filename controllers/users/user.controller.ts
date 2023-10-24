@@ -1,13 +1,14 @@
-require("dotenv").config();
-const bcrypt = require("bcryptjs");
-const User = require("../../models/user.model");
-const { generateToken, generateOtp } = require("../../utils/user.utils");
-const Otp = require("../../models/otp.model");
-const LeaderSchema = require("../../models/leaders.model");
-const twilio = require("twilio")(process.env.SID, process.env.AUTH_TOKEN);
-const path = require("path");
-const {pool} = require(path.join(__dirname, "../../config/mysql"));
+import 'bcryptjs'
+import UserEntity from '../../entities/user.model'
+import {generateToken, generateOtp} from '../../utils/user.utils'
+import OtpEntity from '../../entities/otp.model'
+import LeaderEntity from '../../entities/leaders.model'
+import twilio from 'twilio'
+const tw = twilio(process.env["SID "], process.env["AUTH_TOKEN "])
+import dotenv from 'dotenv'
+import path from 'path'
 
+dotenv.config()
 
 const registerUser = async (req, res) => {
   const {
@@ -84,7 +85,7 @@ const registerUser = async (req, res) => {
       umudugudu,
       telephone,
       ijambobanga: hashedPassword,
-      indangamuntu
+      indangamuntu,
     });
 
     // Save the new user to the database
@@ -290,27 +291,30 @@ const createALeader = async (req, res) => {
   }
 };
 //this is to delete the account of the user
-const destroyAccount=async(req,res)=>{
-  try{
- const {indangamuntu}=req.body;
- const sql=`DELETE FROM Users WHERE indangamuntu=${indangamuntu}`;
+const destroyAccount = async (req, res) => {
+  try {
+    const { indangamuntu } = req.body;
+    const sql = `DELETE FROM Users WHERE indangamuntu=${indangamuntu}`;
 
-  // Use the mysqlConnection object to query the database
-  pool.query(sql, (error, results, fields) => {
-    if (error) {
-      console.error("Error executing SQL query:", error);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-    
-    // Send the query results as a JSON response
-    res.status(200).json({message:"your account has been deleted successfully!"});
-  });
- 
-  }catch(error){
+    // Use the mysqlConnection object to query the database
+    pool.query(sql, (error, results, fields) => {
+      if (error) {
+        console.error("Error executing SQL query:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      // Send the query results as a JSON response
+      res
+        .status(200)
+        .json({ message: "your account has been deleted successfully!" });
+    });
+  } catch (error) {
     console.log(error);
-    res.status(500).json({error:"something went wrong! Please try again latter."});
+    res
+      .status(500)
+      .json({ error: "something went wrong! Please try again latter." });
   }
-  }
+};
 
 module.exports = {
   registerUser,
@@ -319,5 +323,5 @@ module.exports = {
   resendOtp,
   resetPass,
   createALeader,
-  destroyAccount
+  destroyAccount,
 };

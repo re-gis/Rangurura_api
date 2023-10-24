@@ -1,11 +1,11 @@
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
-const Otp = require("../models/otp.model");
+const Otp = require("../entities/otp.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Create OTP
-const generateOtp = () => {
+export const generateOtp = () => {
   try {
     const otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
@@ -21,7 +21,7 @@ const generateOtp = () => {
   }
 };
 
-const generateToken = (user) => {
+export const generateToken = (user) => {
   return jwt.sign(
     {
       id: user.id,
@@ -34,9 +34,4 @@ const generateToken = (user) => {
       expiresIn: "30d",
     }
   );
-};
-
-module.exports = {
-  generateOtp,
-  generateToken,
 };

@@ -1,5 +1,5 @@
 const { cloudinary } = require("../../config/cloudinary");
-const QuestionSchema = require("../../models/question.model");
+const QuestionSchema = require("../../entities/question.model");
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -93,7 +93,7 @@ const getYourQns = async (req, res) => {
       data: myQns,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       message: "Internal server error...",
     });

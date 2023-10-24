@@ -13,7 +13,7 @@ const messageRouter=require("./routes/messagesRouter/messages.routes");
 
 const cors = require("cors");
 // const { mysqlConnect } = require("./config/mysql");
-const { pool } = require("./config/mysql");
+const { pool } = require("./config/postgres");
 const fileUpload = require("express-fileupload");
 const app = express();
 
@@ -34,10 +34,6 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
-
-/* MYSQL Connect */
-// mysqlConnect();
-pool;
 
 /* ROUTES */
 app.use("/api/v1/users", userRouter);

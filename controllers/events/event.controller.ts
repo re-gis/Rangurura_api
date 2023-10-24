@@ -1,5 +1,5 @@
 //this is the logic about the events
-const EventSchema = require("../../models/event.model");
+const EventSchema = require("../../entities/event.model");
 
 const eventController = async (req, res) => {
   if (!req.user) {
@@ -52,11 +52,9 @@ const eventController = async (req, res) => {
 
     //this is to save the problem to the db
     await newEvent.save();
-    return res
-      .status(200)
-      .json({
-        msg: "Wamaze gutanga event yawe tegereza abo igenewe mu mwanya muto!",
-      });
+    return res.status(200).json({
+      msg: "Wamaze gutanga event yawe tegereza abo igenewe mu mwanya muto!",
+    });
   } catch (error) {
     res
       .status(500)
