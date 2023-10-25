@@ -1,30 +1,39 @@
 require("dotenv").config();
 const {Entity, PrimaryGeneratedColumn, Column} = require("typeorm");
 @Entity("questions")
-class QuestionEntity {
+export default class QuestionEntity {
   @PrimaryGeneratedColumn()
-  id
+  id:any
 
   @Column({type: 'varchar', nullable: false})
-  category
+  category:string
 
   @Column({type: 'varchar', nullable: false})
-  problem
+  problem:string
 
   @Column({type:"varchar", nullable: false})
-  proof
+  proof:string
 
   @Column({type:"varchar", nullable: false})
-  adminLevel
+  adminLevel:string
 
   @Column({type: 'varchar', nullable: false})
-  nationalId
+  nationalId:string
 
   @Column({type:'varchar', nullable: false})
-  cloudinaryId
+  cloudinaryId:string
 
   @Column({type:"varchar", nullable: false, default: 'PENDIND'})
-  status
+  status:string
+
+  constructor(status:string, cloudinaryId:string, nationalId:string, adminLevel:string, proof:string, problem:string, category:string) {
+    this.status = status
+    this.cloudinaryId = cloudinaryId
+    this.nationalId = nationalId
+    this.adminLevel = adminLevel
+    this.problem = problem
+    this.proof = proof
+    this.category = category
+  }
 }
 
-module.exports = QuestionEntity

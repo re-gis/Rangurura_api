@@ -4,43 +4,58 @@ const {Entity, PrimaryGeneratedColumn, Column} = require("typeorm");
 @Entity("users")
 export default class UserEntity {
   @PrimaryGeneratedColumn()
-  id
+  id!:number
 
   @Column({type: 'varchar', nullable: false})
-  username
+  username: string
 
   @Column({type: 'varchar', nullable: false, default: 'UMUTURAGE'})
-  role
+  role: string
 
   @Column({type: 'varchar', nullable: false})
-  province
+  province: string
 
   @Column({type: 'varchar', nullable: false})
-  district
+  district: string
 
   @Column({type: 'varchar', nullable: false})
-  sector
+  sector: string
 
   @Column({type: 'varchar', nullable: false})
-  cell
+  cell: string
 
   @Column({type: 'varchar', nullable: false})
-  village
+  village: string
 
   @Column({type:'varchar', nullable: false, unique: true})
-  phoneNumber
+  phoneNumber: string
 
   @Column({type:'varchar', nullable: false, unique: true})
-  nationalId
+  nationalId: string
 
   @Column({type:'varchar', nullable: false})
-  password
+  password: string
 
   @Column({type: 'varchar', nullable: false})
-  imageUrl
+  imageUrl: string
 
   @Column({type:'varchar', nullable: false, default: false})
-  verified
+  verified: string
+
+  constructor(username: string, role: string, sector: string,verified: string, imageUrl:string, password:string, nationalId:string, phoneNumber:string, village: string, cell:string, district:string, province:string) {
+    this.cell= cell
+    this.village = village
+    this.sector = sector
+    this.district = district
+    this.username = username
+    this.phoneNumber = phoneNumber
+    this.password = password
+    this.province = province
+    this.role = role
+    this.verified = verified
+    this.imageUrl = imageUrl
+    this.nationalId = nationalId
+  }
 }
 
 // module.exports = UserEntity

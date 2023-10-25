@@ -1,3 +1,5 @@
+import UserEntity from "../entities/user.model";
+
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
 const Otp = require("../entities/otp.model");
@@ -21,11 +23,11 @@ export const generateOtp = () => {
   }
 };
 
-export const generateToken = (user) => {
+export const generateToken = (user: UserEntity) => {
   return jwt.sign(
     {
       id: user.id,
-      indangamuntu: user.indangamuntu,
+      indangamuntu: user.nationalId,
       role: user.role,
       verified: user.verified,
     },

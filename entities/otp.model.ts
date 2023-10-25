@@ -4,8 +4,16 @@ require("dotenv").config();
 @Entity("otps")
 export default class OtpEntity {
     @PrimaryGeneratedColumn()
-    id
+    id:any
 
     @Column({type:'varchar', nullable: false})
-    number
+    number:string
+
+    @Column({type:'varchar', nullable: false})
+    otp: string
+
+    constructor(number: string, otp:string) {
+        this.number = number
+        this.otp = otp
+    }
 }
