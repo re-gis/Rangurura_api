@@ -2,7 +2,7 @@ require("dotenv").config();
 const {Entity, PrimaryGeneratedColumn, Column} = require("typeorm");
 
 @Entity("users")
-export default class UserEntity {
+export default class User {
   @PrimaryGeneratedColumn()
   id!:number
 
@@ -10,7 +10,7 @@ export default class UserEntity {
   username: string
 
   @Column({type: 'varchar', nullable: false, default: 'UMUTURAGE'})
-  role: string
+  role?: string
 
   @Column({type: 'varchar', nullable: false})
   province: string
@@ -36,13 +36,13 @@ export default class UserEntity {
   @Column({type:'varchar', nullable: false})
   password: string
 
-  @Column({type: 'varchar', nullable: false})
-  imageUrl: string
+  @Column({type: 'varchar', nullable: true})
+  imageUrl?: string
 
-  @Column({type:'varchar', nullable: false, default: false})
-  verified: string
+  @Column({type:'boolean', nullable: true, default: false})
+  verified?: boolean
 
-  constructor(username: string, role: string, sector: string,verified: string, imageUrl:string, password:string, nationalId:string, phoneNumber:string, village: string, cell:string, district:string, province:string) {
+  constructor(username: string, sector: string, password:string, nationalId:string, phoneNumber:string, village: string, cell:string, district:string, province:string, role?: string,verified?: boolean, imageUrl?:string) {
     this.cell= cell
     this.village = village
     this.sector = sector

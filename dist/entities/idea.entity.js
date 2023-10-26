@@ -1,9 +1,10 @@
+"use strict";
 // require("dotenv").config();
 // const {Entity, PrimaryGeneratedColumn, Column} = require("typeorm");
 //
 //
 // @Entity("ideas")
-// class IdeaEntity {
+// class Idea {
 //   @PrimaryGeneratedColumn()
 //   id
 //

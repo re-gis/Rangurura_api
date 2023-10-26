@@ -16,7 +16,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const typeorm_1 = require("typeorm");
-const User = require("../entities/user.model");
+const User = require("../entities/user.entity");
 const protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     let userRepo = (0, typeorm_1.getRepository)(User);
     let token;

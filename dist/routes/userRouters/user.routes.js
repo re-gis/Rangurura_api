@@ -201,7 +201,7 @@ exports.userRouter.post("/register", user_controller_1.registerUser);
 //  *                 error:
 //  *                   type: string
 //  */
-// userRouter.post("/verify", verifyOtp);
+exports.userRouter.post("/verify", user_controller_1.verifyOtp);
 //
 // /**
 //  * @swagger

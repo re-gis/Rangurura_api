@@ -2,7 +2,7 @@
 // require('dotenv').config();
 //
 // @Entity("events")
-// class EventEntity {
+// class Event {
 //
 //     @PrimaryGeneratedColumn()
 //     id;

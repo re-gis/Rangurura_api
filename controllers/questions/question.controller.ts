@@ -1,7 +1,7 @@
 import cloudinary from '../../config/cloudinary'
 import IRequest from "../../interfaces/IRequest";
 import IResponse from "../../interfaces/IResponse";
-import Question from '../../entities/question.model'
+import Question from '../../entities/question.entity'
 import multer from 'multer'
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })

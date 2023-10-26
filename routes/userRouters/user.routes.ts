@@ -11,7 +11,7 @@
 // const userRouter = express.Router();
 
 import express from 'express'
-import {registerUser} from '../../controllers/users/user.controller'
+import {registerUser, verifyOtp} from '../../controllers/users/user.controller'
 export const userRouter = express.Router()
 
 /**
@@ -199,7 +199,7 @@ userRouter.post("/register", registerUser);
 //  *                 error:
 //  *                   type: string
 //  */
-// userRouter.post("/verify", verifyOtp);
+userRouter.post("/verify", verifyOtp);
 //
 // /**
 //  * @swagger

@@ -2,7 +2,7 @@ const {PrimaryGeneratedColumn, Entity, Column} = require("typeorm");
 require("dotenv").config();
 
 @Entity("otps")
-export default class OtpEntity {
+export default class Otp {
     @PrimaryGeneratedColumn()
     id:any
 

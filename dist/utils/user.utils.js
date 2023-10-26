@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateToken = exports.generateOtp = void 0;
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
-const Otp = require("../entities/otp.model");
+const Otp = require("../entities/otp.entity");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 // Create OTP

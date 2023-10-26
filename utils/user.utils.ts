@@ -1,8 +1,8 @@
-import UserEntity from "../entities/user.model";
+import UserEntity from "../entities/user.entity";
 
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
-const Otp = require("../entities/otp.model");
+const Otp = require("../entities/otp.entity");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 

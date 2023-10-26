@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken'
 import IResponse from "../interfaces/IResponse";
 import {NextFunction} from "express";
 import {getRepository, Repository} from "typeorm";
-import UserEntity from "../entities/user.model";
-const User = require("../entities/user.model");
+import UserEntity from "../entities/user.entity";
+const User = require("../entities/user.entity");
 
 const protect = async (req:IRequest, res:IResponse, next:NextFunction) => {
   let userRepo:Repository<UserEntity> = getRepository(User)

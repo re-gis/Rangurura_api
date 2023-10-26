@@ -1,7 +1,7 @@
 require("dotenv").config();
 const {Entity, PrimaryGeneratedColumn, Column} = require("typeorm");
 @Entity("questions")
-export default class QuestionEntity {
+export default class Question {
   @PrimaryGeneratedColumn()
   id:any
 
