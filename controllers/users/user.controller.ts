@@ -249,6 +249,7 @@ export const destroyAccount = async (req:IRequest, res:IResponse):Promise<IRespo
       return res.status(403).json({mesage:"Login to continue..."})
     }
 
+
     const eUser = await userRepo.findOne({where:{nationalId:user.nationalId}})
     if(!eUser) {
       return res.status(404).json({message:"No user found!"})
