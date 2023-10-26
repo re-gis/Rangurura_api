@@ -163,7 +163,8 @@ userRouter.post("/register", registerUser);
 //  *       required: true
 //  *       content:
 //  *         application/json:
-//  *           schema:
+//  *           schema:node dist/index.js
+
 //  *             type: object
 //  *             required:
 //  *             properties:

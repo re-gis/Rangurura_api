@@ -43,6 +43,7 @@
     "swagger-ui-express": "^5.0.0",
     "twilio": "^4.10.0",
     "typeorm": "^0.3.17",
+    "typescript": "^5.2.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

@@ -28,11 +28,17 @@ const PORT = process.env.PORT;
 
 import {createConnection} from 'typeorm'
 
+// createConnection().then(connection => {
+//     console.log("Database connected successfully!")
+// }).catch(error => {
+//     console.log("Error while connecting to database: ", error)
+// })
 createConnection().then(connection => {
-    console.log("Database connected successfully!")
+  console.log("Database connected successfully!")
 }).catch(error => {
-    console.log("Error while connecting to database: ", error)
+  console.log("Error while connecting to database: ", error)
 })
+
 
 app.use(bodyParser.json());
 app.use(
