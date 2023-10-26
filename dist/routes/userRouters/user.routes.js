@@ -166,7 +166,7 @@ exports.userRouter.post("/register", user_controller_1.registerUser);
 //  *       required: true
 //  *       content:
 //  *         application/json:
-//  *           schema:
+//  *           schema:node dist/index.js
 //  *             type: object
 //  *             required:
 //  *             properties:

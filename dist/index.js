@@ -26,6 +26,11 @@ const user_routes_1 = require("./routes/userRouters/user.routes");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT;
 const typeorm_1 = require("typeorm");
+// createConnection().then(connection => {
+//     console.log("Database connected successfully!")
+// }).catch(error => {
+//     console.log("Error while connecting to database: ", error)
+// })
 (0, typeorm_1.createConnection)().then(connection => {
     console.log("Database connected successfully!");
 }).catch(error => {
