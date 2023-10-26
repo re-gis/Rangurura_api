@@ -1,17 +1,6 @@
-// const express = require("express");
-// const {
-//   registerUser,
-//   loginUser,
-//   verifyOtp,
-//   resendOtp,
-//   createALeader,
-//   destroyAccount
-// } = require("../../controllers/users/user.controller");
-// const { protect, role } = require("../../middlewares/auth.user");
-// const userRouter = express.Router();
-
 import express from 'express'
-import {registerUser, verifyOtp} from '../../controllers/users/user.controller'
+import {destroyAccount, loginUser, registerUser, resendOtp, verifyOtp} from '../../controllers/users/user.controller'
+import {protect} from "../../middlewares/auth.user";
 export const userRouter = express.Router()
 
 /**
@@ -149,7 +138,7 @@ userRouter.post("/register", registerUser);
 //  *                 error:
 //  *                   type: string
 //  */
-// userRouter.post("/login", loginUser);
+userRouter.post("/login", loginUser);
 //
 // /**
 //  * @swagger
@@ -229,7 +218,7 @@ userRouter.post("/verify", verifyOtp);
 //  *         description: Internal server error.
 //  */
 //
-// userRouter.post("/resendOtp", resendOtp);
+userRouter.post("/resendOtp", resendOtp);
 //
 // /**
 //  * @swagger
@@ -314,7 +303,6 @@ userRouter.post("/verify", verifyOtp);
 //  *         description: Internal server error.
 //  */
 //
-// userRouter.post("/leaders/add", protect, role("umuturage"), createALeader);
 // /**
 //  * @swagger
 //  * /api/v1/users/deleteAccount:
@@ -342,7 +330,7 @@ userRouter.post("/verify", verifyOtp);
 //  *       500:
 //  *         description: Internal server error.
 //  */
-// userRouter.delete("/deleteAccount",destroyAccount);
+userRouter.delete("/deleteAccount", protect,destroyAccount);
 //
 //
 //

@@ -67,11 +67,11 @@ export const registerUser = async (req: IRequest, res:IResponse):Promise<IRespon
     // send message
     const otp = generateOtp();
     console.log(otp)
-    // await tw.messages.create({
-    //   body: `Kode yawe yo muri Rangurura ni ${otp}`,
-    //   to: telephone,
-    //   from: "+12765985304",
-    // });
+    await tw.messages.create({
+      body: `Kode yawe yo muri Rangurura ni ${otp}`,
+      to: telephone,
+      from: "+12765985304",
+    });
 
     // Save the otp
     const hashedOtp = await bcrypt.hash(otp, 10);
@@ -105,34 +105,35 @@ export const registerUser = async (req: IRequest, res:IResponse):Promise<IRespon
     return res.status(500).json({message: "Internal server error...", error: error})
   }
 }
-//
-// const loginUser = async (req, res) => {
-//   try {
-//     const { indangamuntu, ijambobanga } = req.body;
-//     if (!indangamuntu || !ijambobanga)
-//       return res.status(400).json({
-//         message: "All credentials are required",
-//       });
-//
-//     const user = await User.findOne({ where: { indangamuntu: indangamuntu } });
-//     if (!user || !(await bcrypt.compare(ijambobanga, user.ijambobanga)))
-//       return res.status(400).json({
-//         message: "shyiramo indangamuntu na password bitarimo ikosa!",
-//       });
-//
-//     return res.status(200).json({
-//       message: "User logged in successfully",
-//       token: generateToken(user),
-//       indangamuntu, //this is must be stored on the fronted and used when making table or demanding difference services from the backend
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       message: "Internal server error...",
-//     });
-//   }
-// };
-//
+
+export const loginUser = async (req:IRequest, res:IResponse):Promise<IResponse> => {
+  const userRepo:Repository<User> = getRepository(User)
+  try {
+    const { indangamuntu, ijambobanga } = req.body;
+    if (!indangamuntu || !ijambobanga)
+      return res.status(400).json({
+        message: "All credentials are required",
+      });
+
+    const user = await userRepo.findOne({ where: { nationalId: indangamuntu } });
+    if (!user || !(await bcrypt.compare(ijambobanga, user.password)))
+      return res.status(400).json({
+        message: "shyiramo indangamuntu na password bitarimo ikosa!",
+      });
+
+    return res.status(200).json({
+      message: "User logged in successfully",
+      token: generateToken(user),
+      indangamuntu, //this is must be stored on the fronted and used when making table or demanding difference services from the backend
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error...",
+    });
+  }
+};
+
 // verify otp
 export const verifyOtp = async (req:IRequest, res:IResponse):Promise<IResponse> => {
   let otpRepo:Repository<Otp> = getRepository(Otp)
@@ -185,49 +186,46 @@ export const verifyOtp = async (req:IRequest, res:IResponse):Promise<IResponse> 
     });
   }
 };
-//
-// const resendOtp = async (req, res) => {
-//   try {
-//     const { number } = req.body;
-//     if (!number)
-//       return res.status(400).json({
-//         message: "All details are required",
-//       });
-//
-//     const newOtp = await sendOtp(number, async (e) => {
-//       if (e) {
-//         return res.status(500).json({ message: "An error occurred" });
-//       } else {
-//         const existingotp = await Otp.findOne({
-//           where: {
-//             number: number,
-//           },
-//         });
-//
-//         if (existingotp) {
-//           await existingotp.update({ otp: newOtp });
-//           return res.status(201).json({
-//             message: "Otp resent",
-//           });
-//         } else {
-//           await Otp.create({
-//             otp: newOtpValue,
-//             number: number,
-//           });
-//           return res.status(201).json({
-//             message: "Otp resent",
-//           });
-//         }
-//       }
-//     });
-//   } catch (e) {
-//     console.log(e);
-//     return res.status(500).json({
-//       message: "Internal server error...",
-//     });
-//   }
-// };
-//
+
+export const resendOtp = async (req:IRequest, res:IResponse):Promise<IResponse> => {
+  const otpRepo:Repository<Otp> = getRepository(Otp)
+  try {
+    const { number } = req.body;
+    if (!number)
+      return res.status(400).json({
+        message: "All details are required",
+      });
+
+    // first delete the existing otp
+    const eOtp = await otpRepo.findOne({where:{number: number}})
+    if(!eOtp) {
+      return res.status(401).json({message:"No otp found!"})
+    }
+
+    if(!await otpRepo.delete(eOtp)) {
+      return res.status(500).json({message: "Error while deleting the otp..."})
+    }
+
+    const otp = generateOtp();
+    await tw.messages.create({
+      body: `Kode yawe yo muri Rangurura ni ${otp}`,
+      to: number,
+      from: "+12765985304",
+    });
+
+    const hashedOtp = await bcrypt.hash(otp, 10)
+
+    const newOtp:Otp = new Otp(number, hashedOtp)
+    await otpRepo.save(newOtp)
+    return res.status(200).json({message:`Code resent to ${number}...`})
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Internal server error...",
+    });
+  }
+};
+
 // const resetPass = async (req, res) => {
 //   try {
 //   } catch (e) {
@@ -237,74 +235,38 @@ export const verifyOtp = async (req:IRequest, res:IResponse):Promise<IResponse> 
 //     });
 //   }
 // };
-//
-// const createALeader = async (req, res) => {
-//   try {
-//     if (!req.user)
-//       return res.status(403).json({
-//         message: "Login to continue",
-//       });
-//     const { indangamuntu, organizationLevel, location, category, role } =
-//       req.body;
-//
-//     if (!indangamuntu || !organizationLevel || !location || !category || !role)
-//       return res.status(403).json({
-//         message: "All credentials are required!",
-//       });
-//
-//     // find the leader if present update else create new one
-//     const eUser = await LeaderSchema.findOne({
-//       where: {
-//         indangamuntu: indangamuntu,
-//       },
-//     });
-//
-//     if (eUser) {
-//       // update the current user
-//       const userToSave = new LeaderSchema({
-//         indangamuntu: indangamuntu,
-//         organizationLevel: organizationLevel,
-//         location: location,
-//         category: category,
-//         role: role,
-//       });
-//
-//       if (await userToSave.save())
-//         return res.status(201).json({ message: "Leader saved successfully" });
-//       return res.status(500).json({
-//         mesage: "Error while saving the leader",
-//       });
-//     }
-//   } catch (e) {
-//     console.log(e);
-//     return res.status(500).json({
-//       message: "Internal server error...",
-//     });
-//   }
-// };
-// //this is to delete the account of the user
-// const destroyAccount = async (req, res) => {
-//   try {
-//     const { indangamuntu } = req.body;
-//     const sql = `DELETE FROM Users WHERE indangamuntu=${indangamuntu}`;
-//
-//     // Use the mysqlConnection object to query the database
-//     pool.query(sql, (error, results, fields) => {
-//       if (error) {
-//         console.error("Error executing SQL query:", error);
-//         return res.status(500).json({ error: "Internal Server Error" });
-//       }
-//
-//       // Send the query results as a JSON response
-//       res
-//         .status(200)
-//         .json({ message: "your account has been deleted successfully!" });
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res
-//       .status(500)
-//       .json({ error: "something went wrong! Please try again latter." });
-//   }
-// };
+
+//this is to delete the account of the user
+export const destroyAccount = async (req:IRequest, res:IResponse):Promise<IResponse> => {
+  const userRepo:Repository<User> = getRepository(User)
+  try {
+    const {password} = req.body
+    if(!password) {
+      return res.status(401).json({message:"Password is required!"})
+    }
+    const user = req.user
+    if(!user) {
+      return res.status(403).json({mesage:"Login to continue..."})
+    }
+
+    const eUser = await userRepo.findOne({where:{nationalId:user.nationalId}})
+    if(!eUser) {
+      return res.status(404).json({message:"No user found!"})
+    }
+
+    // check password
+    if(!(await bcrypt.compare(password, eUser.password))) {
+      return res.status(401).json({message:"Confirm password to continue!"})
+    }
+
+    // delete the user account
+    await userRepo.delete(eUser)
+    return res.status(200).json({message:"User account deleted successfully!"})
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "something went wrong! Please try again latter." });
+  }
+};
 

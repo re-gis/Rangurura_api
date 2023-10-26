@@ -1,8 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.leaderRouter = void 0;
 // const express = require("express");
 // const leaderRouter = express.Router();
 // const leaderController=require('../../controllers/leaders/leaders.controller');
 // const displayLeaders=require("../../controllers/leaders/displayLeader.controller");
+const express_1 = __importDefault(require("express"));
+exports.leaderRouter = express_1.default.Router();
 //
 // /**
 //  * @swagger
@@ -91,6 +98,8 @@
 //  *                 error:
 //  *                   type: string
 //  */
-// leaderRouter.post('/addLeader',leaderController);
+const auth_user_1 = require("../../middlewares/auth.user");
+const leaders_controller_1 = require("../../controllers/leaders/leaders.controller");
+exports.leaderRouter.post('/add', auth_user_1.protect, (0, auth_user_1.role)("UMUTURAGE"), leaders_controller_1.createALeader);
 //
 // module.exports = leaderRouter;

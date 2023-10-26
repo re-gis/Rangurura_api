@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.role = exports.protect = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const typeorm_1 = require("typeorm");
-const User = require("../entities/user.entity");
+const user_entity_1 = __importDefault(require("../entities/user.entity"));
 const protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    let userRepo = (0, typeorm_1.getRepository)(User);
+    let userRepo = (0, typeorm_1.getRepository)(user_entity_1.default);
     let token;
     try {
         if (req.headers.authorization &&
@@ -33,7 +34,7 @@ const protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
                 // @ts-ignore
                 const indangamuntu = decoded.indangamuntu;
                 // get user with the same ID
-                const user = yield userRepo.findOne(indangamuntu);
+                const user = yield userRepo.findOne({ where: { nationalId: indangamuntu } });
                 if (!user)
                     return res.status(403).json({
                         message: "Not authorised!",
@@ -67,6 +68,7 @@ const protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
             message: "Not authorised!",
         });
 });
+exports.protect = protect;
 const role = (...roles) => {
     return (req, res, next) => {
         if (roles.includes(req.user.role)) {
@@ -79,4 +81,5 @@ const role = (...roles) => {
         }
     };
 };
-module.exports = { protect, role };
+exports.role = role;
+module.exports = { protect: exports.protect, role: exports.role };

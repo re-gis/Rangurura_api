@@ -2,6 +2,8 @@
 // const leaderRouter = express.Router();
 // const leaderController=require('../../controllers/leaders/leaders.controller');
 // const displayLeaders=require("../../controllers/leaders/displayLeader.controller");
+import express from 'express'
+export const leaderRouter = express.Router()
 //
 // /**
 //  * @swagger
@@ -90,6 +92,9 @@
 //  *                 error:
 //  *                   type: string
 //  */
-// leaderRouter.post('/addLeader',leaderController);
+import {protect, role} from "../../middlewares/auth.user";
+import {createALeader} from "../../controllers/leaders/leaders.controller";
+
+leaderRouter.post('/add',protect, role("UMUTURAGE"), createALeader);
 //
 // module.exports = leaderRouter;

@@ -27,6 +27,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 import {createConnection} from 'typeorm'
+import {leaderRouter} from "./routes/leadersRoutes/leaders.routes";
 
 // createConnection().then(connection => {
 //     console.log("Database connected successfully!")
@@ -61,7 +62,7 @@ app.use("/api/v1/users", userRouter);
 // app.use("/api/v1/questions", questionRouter);
 // app.use("/api/v1/ideas", ideasRouter);
 // app.use("/api/v1/events", eventRouter);
-// app.use("/api/v1/leaders", leaderRouter);
+app.use("/api/v1/leaders", leaderRouter);
 // app.use("/api/v1/message",messageRouter);
 // app /* SWAGGER */.app
 //   app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

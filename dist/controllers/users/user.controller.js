@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyOtp = exports.registerUser = void 0;
+exports.destroyAccount = exports.resendOtp = exports.verifyOtp = exports.loginUser = exports.registerUser = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const user_entity_1 = __importDefault(require("../../entities/user.entity"));
 const user_utils_1 = require("../../utils/user.utils");
@@ -61,11 +61,11 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // send message
         const otp = (0, user_utils_1.generateOtp)();
         console.log(otp);
-        // await tw.messages.create({
-        //   body: `Kode yawe yo muri Rangurura ni ${otp}`,
-        //   to: telephone,
-        //   from: "+12765985304",
-        // });
+        yield tw.messages.create({
+            body: `Kode yawe yo muri Rangurura ni ${otp}`,
+            to: telephone,
+            from: "+12765985304",
+        });
         // Save the otp
         const hashedOtp = yield bcryptjs_1.default.hash(otp, 10);
         // check if it exists
@@ -95,41 +95,39 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.registerUser = registerUser;
-//
-// const loginUser = async (req, res) => {
-//   try {
-//     const { indangamuntu, ijambobanga } = req.body;
-//     if (!indangamuntu || !ijambobanga)
-//       return res.status(400).json({
-//         message: "All credentials are required",
-//       });
-//
-//     const user = await User.findOne({ where: { indangamuntu: indangamuntu } });
-//     if (!user || !(await bcrypt.compare(ijambobanga, user.ijambobanga)))
-//       return res.status(400).json({
-//         message: "shyiramo indangamuntu na password bitarimo ikosa!",
-//       });
-//
-//     return res.status(200).json({
-//       message: "User logged in successfully",
-//       token: generateToken(user),
-//       indangamuntu, //this is must be stored on the fronted and used when making table or demanding difference services from the backend
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       message: "Internal server error...",
-//     });
-//   }
-// };
-//
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userRepo = (0, typeorm_1.getRepository)(user_entity_1.default);
+    try {
+        const { indangamuntu, ijambobanga } = req.body;
+        if (!indangamuntu || !ijambobanga)
+            return res.status(400).json({
+                message: "All credentials are required",
+            });
+        const user = yield userRepo.findOne({ where: { nationalId: indangamuntu } });
+        if (!user || !(yield bcryptjs_1.default.compare(ijambobanga, user.password)))
+            return res.status(400).json({
+                message: "shyiramo indangamuntu na password bitarimo ikosa!",
+            });
+        return res.status(200).json({
+            message: "User logged in successfully",
+            token: (0, user_utils_1.generateToken)(user),
+            indangamuntu, //this is must be stored on the fronted and used when making table or demanding difference services from the backend
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Internal server error...",
+        });
+    }
+});
+exports.loginUser = loginUser;
 // verify otp
 const verifyOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let otpRepo = (0, typeorm_1.getRepository)(otp_entity_1.default);
     let userRepo = (0, typeorm_1.getRepository)(user_entity_1.default);
     try {
         const { number, otp } = req.body;
-        console.log(otp);
         if (!number || !otp)
             return res.status(400).json({
                 message: "All details are required!",
@@ -172,49 +170,41 @@ const verifyOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.verifyOtp = verifyOtp;
-//
-// const resendOtp = async (req, res) => {
-//   try {
-//     const { number } = req.body;
-//     if (!number)
-//       return res.status(400).json({
-//         message: "All details are required",
-//       });
-//
-//     const newOtp = await sendOtp(number, async (e) => {
-//       if (e) {
-//         return res.status(500).json({ message: "An error occurred" });
-//       } else {
-//         const existingotp = await Otp.findOne({
-//           where: {
-//             number: number,
-//           },
-//         });
-//
-//         if (existingotp) {
-//           await existingotp.update({ otp: newOtp });
-//           return res.status(201).json({
-//             message: "Otp resent",
-//           });
-//         } else {
-//           await Otp.create({
-//             otp: newOtpValue,
-//             number: number,
-//           });
-//           return res.status(201).json({
-//             message: "Otp resent",
-//           });
-//         }
-//       }
-//     });
-//   } catch (e) {
-//     console.log(e);
-//     return res.status(500).json({
-//       message: "Internal server error...",
-//     });
-//   }
-// };
-//
+const resendOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const otpRepo = (0, typeorm_1.getRepository)(otp_entity_1.default);
+    try {
+        const { number } = req.body;
+        if (!number)
+            return res.status(400).json({
+                message: "All details are required",
+            });
+        // first delete the existing otp
+        const eOtp = yield otpRepo.findOne({ where: { number: number } });
+        if (!eOtp) {
+            return res.status(401).json({ message: "No otp found!" });
+        }
+        if (!(yield otpRepo.delete(eOtp))) {
+            return res.status(500).json({ message: "Error while deleting the otp..." });
+        }
+        const otp = (0, user_utils_1.generateOtp)();
+        yield tw.messages.create({
+            body: `Kode yawe yo muri Rangurura ni ${otp}`,
+            to: number,
+            from: "+12765985304",
+        });
+        const hashedOtp = yield bcryptjs_1.default.hash(otp, 10);
+        const newOtp = new otp_entity_1.default(number, hashedOtp);
+        yield otpRepo.save(newOtp);
+        return res.status(200).json({ message: `Code resent to ${number}...` });
+    }
+    catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            message: "Internal server error...",
+        });
+    }
+});
+exports.resendOtp = resendOtp;
 // const resetPass = async (req, res) => {
 //   try {
 //   } catch (e) {
@@ -224,73 +214,35 @@ exports.verifyOtp = verifyOtp;
 //     });
 //   }
 // };
-//
-// const createALeader = async (req, res) => {
-//   try {
-//     if (!req.user)
-//       return res.status(403).json({
-//         message: "Login to continue",
-//       });
-//     const { indangamuntu, organizationLevel, location, category, role } =
-//       req.body;
-//
-//     if (!indangamuntu || !organizationLevel || !location || !category || !role)
-//       return res.status(403).json({
-//         message: "All credentials are required!",
-//       });
-//
-//     // find the leader if present update else create new one
-//     const eUser = await LeaderSchema.findOne({
-//       where: {
-//         indangamuntu: indangamuntu,
-//       },
-//     });
-//
-//     if (eUser) {
-//       // update the current user
-//       const userToSave = new LeaderSchema({
-//         indangamuntu: indangamuntu,
-//         organizationLevel: organizationLevel,
-//         location: location,
-//         category: category,
-//         role: role,
-//       });
-//
-//       if (await userToSave.save())
-//         return res.status(201).json({ message: "Leader saved successfully" });
-//       return res.status(500).json({
-//         mesage: "Error while saving the leader",
-//       });
-//     }
-//   } catch (e) {
-//     console.log(e);
-//     return res.status(500).json({
-//       message: "Internal server error...",
-//     });
-//   }
-// };
-// //this is to delete the account of the user
-// const destroyAccount = async (req, res) => {
-//   try {
-//     const { indangamuntu } = req.body;
-//     const sql = `DELETE FROM Users WHERE indangamuntu=${indangamuntu}`;
-//
-//     // Use the mysqlConnection object to query the database
-//     pool.query(sql, (error, results, fields) => {
-//       if (error) {
-//         console.error("Error executing SQL query:", error);
-//         return res.status(500).json({ error: "Internal Server Error" });
-//       }
-//
-//       // Send the query results as a JSON response
-//       res
-//         .status(200)
-//         .json({ message: "your account has been deleted successfully!" });
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res
-//       .status(500)
-//       .json({ error: "something went wrong! Please try again latter." });
-//   }
-// };
+//this is to delete the account of the user
+const destroyAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userRepo = (0, typeorm_1.getRepository)(user_entity_1.default);
+    try {
+        const { password } = req.body;
+        if (!password) {
+            return res.status(401).json({ message: "Password is required!" });
+        }
+        const user = req.user;
+        if (!user) {
+            return res.status(403).json({ mesage: "Login to continue..." });
+        }
+        const eUser = yield userRepo.findOne({ where: { nationalId: user.nationalId } });
+        if (!eUser) {
+            return res.status(404).json({ message: "No user found!" });
+        }
+        // check password
+        if (!(yield bcryptjs_1.default.compare(password, eUser.password))) {
+            return res.status(401).json({ message: "Confirm password to continue!" });
+        }
+        // delete the user account
+        yield userRepo.delete(eUser);
+        return res.status(200).json({ message: "User account deleted successfully!" });
+    }
+    catch (error) {
+        console.log(error);
+        return res
+            .status(500)
+            .json({ error: "something went wrong! Please try again latter." });
+    }
+});
+exports.destroyAccount = destroyAccount;

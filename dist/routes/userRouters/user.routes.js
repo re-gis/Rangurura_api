@@ -1,15 +1,4 @@
 "use strict";
-// const express = require("express");
-// const {
-//   registerUser,
-//   loginUser,
-//   verifyOtp,
-//   resendOtp,
-//   createALeader,
-//   destroyAccount
-// } = require("../../controllers/users/user.controller");
-// const { protect, role } = require("../../middlewares/auth.user");
-// const userRouter = express.Router();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -17,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const user_controller_1 = require("../../controllers/users/user.controller");
+const auth_user_1 = require("../../middlewares/auth.user");
 exports.userRouter = express_1.default.Router();
 /**
  * @swagger
@@ -152,7 +142,7 @@ exports.userRouter.post("/register", user_controller_1.registerUser);
 //  *                 error:
 //  *                   type: string
 //  */
-// userRouter.post("/login", loginUser);
+exports.userRouter.post("/login", user_controller_1.loginUser);
 //
 // /**
 //  * @swagger
@@ -231,7 +221,7 @@ exports.userRouter.post("/verify", user_controller_1.verifyOtp);
 //  *         description: Internal server error.
 //  */
 //
-// userRouter.post("/resendOtp", resendOtp);
+exports.userRouter.post("/resendOtp", user_controller_1.resendOtp);
 //
 // /**
 //  * @swagger
@@ -316,7 +306,6 @@ exports.userRouter.post("/verify", user_controller_1.verifyOtp);
 //  *         description: Internal server error.
 //  */
 //
-// userRouter.post("/leaders/add", protect, role("umuturage"), createALeader);
 // /**
 //  * @swagger
 //  * /api/v1/users/deleteAccount:
@@ -344,7 +333,7 @@ exports.userRouter.post("/verify", user_controller_1.verifyOtp);
 //  *       500:
 //  *         description: Internal server error.
 //  */
-// userRouter.delete("/deleteAccount",destroyAccount);
+exports.userRouter.delete("/deleteAccount", auth_user_1.protect, user_controller_1.destroyAccount);
 //
 //
 //

@@ -26,6 +26,7 @@ const user_routes_1 = require("./routes/userRouters/user.routes");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT;
 const typeorm_1 = require("typeorm");
+const leaders_routes_1 = require("./routes/leadersRoutes/leaders.routes");
 // createConnection().then(connection => {
 //     console.log("Database connected successfully!")
 // }).catch(error => {
@@ -51,7 +52,7 @@ app.use("/api/v1/users", user_routes_1.userRouter);
 // app.use("/api/v1/questions", questionRouter);
 // app.use("/api/v1/ideas", ideasRouter);
 // app.use("/api/v1/events", eventRouter);
-// app.use("/api/v1/leaders", leaderRouter);
+app.use("/api/v1/leaders", leaders_routes_1.leaderRouter);
 // app.use("/api/v1/message",messageRouter);
 // app /* SWAGGER */.app
 //   app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

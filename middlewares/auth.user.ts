@@ -5,11 +5,10 @@ import jwt from 'jsonwebtoken'
 import IResponse from "../interfaces/IResponse";
 import {NextFunction} from "express";
 import {getRepository, Repository} from "typeorm";
-import UserEntity from "../entities/user.entity";
-const User = require("../entities/user.entity");
+import User from "../entities/user.entity";
 
-const protect = async (req:IRequest, res:IResponse, next:NextFunction) => {
-  let userRepo:Repository<UserEntity> = getRepository(User)
+export const protect = async (req:IRequest, res:IResponse, next:NextFunction) => {
+  let userRepo:Repository<User> = getRepository(User)
   let token;
   try {
     if (
@@ -27,7 +26,7 @@ const protect = async (req:IRequest, res:IResponse, next:NextFunction) => {
         // @ts-ignore
         const indangamuntu = decoded.indangamuntu;
         // get user with the same ID
-        const user = await userRepo.findOne(indangamuntu)
+        const user = await userRepo.findOne({where:{nationalId:indangamuntu}})
         if (!user)
           return res.status(403).json({
             message: "Not authorised!",
@@ -62,7 +61,7 @@ const protect = async (req:IRequest, res:IResponse, next:NextFunction) => {
     });
 };
 
-const role = (...roles:string[]) => {
+export const role = (...roles:string[]) => {
   return (req:IRequest, res:IResponse, next:NextFunction) => {
     if (roles.includes(req.user.role)) {
       return res.status(403).json({
